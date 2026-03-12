@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Soenneker.Extensions.ConcurrentQueues.Strings.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Extensions.ConcurrentQueues.Strings\Soenneker.Extensions.ConcurrentQueues.Strings.csproj" />
     </ItemGroup>
 
     <ItemGroup>
