@@ -38,7 +38,7 @@ jobs:
         run: dotnet build test/Soenneker.Extensions.ConcurrentQueues.Strings.Tests/Soenneker.Extensions.ConcurrentQueues.Strings.Tests.csproj --configuration Release --no-restore --verbosity minimal
 
       - name: Test
-        run: dotnet test test/Soenneker.Extensions.ConcurrentQueues.Strings.Tests/Soenneker.Extensions.ConcurrentQueues.Strings.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
+        run: dotnet test --project test/Soenneker.Extensions.ConcurrentQueues.Strings.Tests/Soenneker.Extensions.ConcurrentQueues.Strings.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
 
       - name: Pack
         run: dotnet pack src/Soenneker.Extensions.ConcurrentQueues.Strings/Soenneker.Extensions.ConcurrentQueues.Strings.csproj --configuration Release --no-build --no-restore --output . --verbosity minimal
