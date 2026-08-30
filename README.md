@@ -5,7 +5,7 @@
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Extensions.ConcurrentQueues.Strings
 
-A helpful set of extension methods for concurrentqueue (string).
+Reads the final string from a `ConcurrentQueue<string>` enumeration snapshot without copying the queue to an array.
 
 ## Installation
 
@@ -13,15 +13,22 @@ A helpful set of extension methods for concurrentqueue (string).
 dotnet add package Soenneker.Extensions.ConcurrentQueues.Strings
 ```
 
-## Quick start
+## Usage
 
 ```csharp
 using Soenneker.Extensions.ConcurrentQueues.Strings;
 
-// Given an existing ConcurrentQueue<string> named queue:
-var result = queue.GetTail();
+var queue = new ConcurrentQueue<string>();
+queue.Enqueue("first");
+queue.Enqueue("second");
+
+string? tail = queue.GetTail(); // "second"
 ```
 
-## Common operations
+`GetTail()` enumerates a moment-in-time snapshot and returns its last item, or `null` when the snapshot is empty. It does not dequeue or otherwise mutate the queue.
 
-- `GetTail()` - Gets the last element (tail) of the queue without allocating. Returns the last string in the queue if present; otherwise `null`.
+The operation is O(n), not O(1). It avoids `ToArray()` and a full array copy, but the framework's snapshot enumerator may allocate and retains access to the observed queue segments for the duration of enumeration.
+
+The result is observational only: another thread can dequeue that item immediately, and enqueues after snapshot creation are not reflected. Do not use it to make a check-then-act decision or to consume work. Use `TryPeek()` for the head, `TryDequeue()` for atomic consumption, or maintain separate synchronized state if frequent tail access is a requirement.
+
+Although the queue is annotated for non-null strings, a null can still be inserted by unchecked or legacy code. In that case a null tail is indistinguishable from an empty queue through this API.
